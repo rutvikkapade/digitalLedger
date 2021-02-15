@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+<body>
+<form action="addClient" method="post">
+	<input type="text" name="clientName" placeholder="Client Name" required>
+	<input type="email" name="clientEmail" placeholder="Client Email" required>
+	<input type="tel" name="clientMobile" placeholder="clientMobile" required maxlength="10">
+	<input type="submit" value="add client">
+</form>
+<br>
+<form action="sendTransactionRequest" method="post" id="transactionForm">
+	<input type="number" name="amount" placeholder="amount" required>
+	<input type="text" placeholder="Payment for?" name="reason" required>
+	<input type="email" placeholder="Customer Email" name="clientEmail" required>
+	<input type="submit" value="Request Payment">
+</form>
+</body>
+
+</html>

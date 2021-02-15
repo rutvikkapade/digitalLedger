@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+<body>
+<form action="register" method="post">
+	<input type="text" name="b_name" required>
+	<input type="text" name="b_owner" required>
+	<input type="email" name="b_email" required>
+	<input type="tel" name="b_number" maxlength="10" required>
+	<input type="password" name="b_password" required>
+	<input type="submit">
+</form>
+<br>
+<form action="login" method="post">
+	<input type="email" name="l_email" required>
+	<input type="password" name="l_password" required>
+	<input type="submit">
+</form>
+<button id="showUser">show user</button>
+<br>
+<h1 id="noOne"></h1>
+</body>
+<script type="text/javascript">
+	$('#showUser').click(()=>{
+		$.get( "/show", function(data) {
+  $( "#noOne" ).html("hello");
+
+});
+	});
+</script>
+</html>
