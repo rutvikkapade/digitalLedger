@@ -36,12 +36,14 @@ app.post('/register',(req,res)=>{
     res.sendStatus(204);
 });
 app.post('/login',async(req,res)=>{
+    
 const isUser=await model.login(req.body.l_email);
 if(isUser[0]==true){
-bcrypt.compare(req.body.l_password,isUser[2],(err,result)=>{
+await bcrypt.compare(req.body.l_password,isUser[2],(err,result)=>{
     if(err){console.log(err);}
     else{console.log(result);
         req.session.username=isUser[1][0].b_email;
+        req.session.b_doc=model.findBusiness(l_email);
     res.sendFile(path.join(__dirname,"public","html","dashboard.html"));
     }
 })
@@ -52,7 +54,7 @@ app.get('/show',(req,res)=>{
 });
 app.post('/addClient',(req,res)=>{
     
-    model.addClient(req.body.clientName,req.body.clientEmail,req.body.clientMobile);
+    model.addClient(req.body.clientName,req.body.clientEmail,req.body.clientMobile,req.session.username);
     res.sendStatus(204);
 });
 app.post('/sendTransactionRequest',async(req,res)=>{
@@ -63,9 +65,19 @@ res.sendStatus(204);
 app.get('/payment',async(req,res)=>{
 var isPresent=await model.isPresent(req.query.unique);
 if(isPresent){
-    req.session.pid=req.query.unique;
+    res.sendFile(path.join(__dirname,"public","html","payment.html"));
 }else{
     res.send('<h3>this url is expired , the payment is complete or declined already</h3>');
 }
+})
+app.get('/signup',(req,res)=>{
+    res.sendFile(path.join(__dirname,"public","html","signUp.html"));
+})
+app.get('/loginPage',(req,res)=>{
+    res.sendFile(path.join(__dirname,"public","html","login.html"))
+})
+app.post('/approvePayment',(req,res)=>{
+payment.processPayment(req.body.unique,req.body.verdict);
+res.send("recieved data at backend");
 })
 app.listen(port,()=>{console.log('server on')});

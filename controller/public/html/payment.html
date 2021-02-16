@@ -1,1 +1,35 @@
-test
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<h3 id="paymentId"></h3>
+<form  action="approvePayment" id="paymentForm" method="post">
+	<div id="uniqueBlock"></div>
+	<label>Approve Payment</label><input type="radio" name="verdict" value="true" required>
+	<label>Decline Payment</label><input type="radio" name="verdict" value="false" required>
+	</form>
+	<br>
+<button id="submitData">Submit</button> 
+</body>
+<script type="text/javascript">
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const unique = urlParams.get('unique');
+$('#uniqueBlock').append('<label>payment id: </label><input type="text" name="unique" value="'+unique+'" required>');
+$("#submitData").click((event)=>{
+	$.ajax({
+		url: "approvePayment",
+		method : "post",
+		data : $('#paymentForm').serialize(),
+		success : (data)=>{
+			console.log(data);
+		}
+	})
+})
+
+</script>
+</html>
