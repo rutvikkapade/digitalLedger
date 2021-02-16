@@ -7,6 +7,7 @@ const session= require('express-session');
 const bcrypt=require('bcrypt');
 const model=require('../main/model/model.js');
 const mailer=require('../main/mailerService/mailer.js');
+const payment=require("../main/payment/paymentService.js")
 const saltRounds=10;
 app.use(session({
     secret: 'secret-key',

@@ -3,10 +3,8 @@ const { Mongoose } = require('mongoose');
 
 mongoose=require('mongoose');
 mongoose.connect('mongodb+srv://dbuser:root@cluster0.1fwfj.mongodb.net/mainDB?retryWrites=true&w=majority',{ useUnifiedTopology: true,useNewUrlParser: true },(err)=>{
-    if(err){
-        console.log(err);
-    }else{console.log('database connection established');}
-})
+    if(err){console.log(err);}
+    else{console.log('database connection established');}});
 var ObjectId=mongoose.Schema.ObjectId;
 var pendingTransactionsSchema=new  mongoose.Schema({
     amount:{type:Number,sparse:true},
@@ -33,11 +31,12 @@ b_owner:{type : String ,required:true},
 b_email : {type : String , required:true,unique:true},
 b_mobile:{type:Number,required:true,unique:true},
 b_password :{type:String ,required:true},
-firstTransaction : {type:Nummber,required:true},
+firstTransaction : {type:Number,required:true},
 clients : {type:[clientSchema],unique:true}});
 var business=mongoose.model("Businesses",businessSchema);
 var pending=mongoose.model("PendingTransactions",pendingTransactionsSchema);
 var client=mongoose.model("clients",clientSchema);
+var transaction=mongoose.model("transaction",transactionSchema);
 module.exports={
  register : function(b_name,b_owner,b_email,b_mobile,b_password){
     var newDoc= new business();
@@ -91,26 +90,30 @@ await pending.findById(id,(err,result)=>{
 return hashCheck;
 },
 findTransaction : async(id)=>{
-    var doc;
-    await pending.findById(id,(err,result)=>{
+    const doc=await pending.findById(id,(err,result)=>{
         if(err){console.log(err);}
-        else{
-            if(result!=null){doc=result;}
-            }
     });
     return doc;
     },
 findBusiness : async(b_email)=>{
-    var bdoc;
-    await business.find({b_email:b_email},(err,doc)=>{
-        if(err){console.log(err);}
-        else{bdoc=doc;}
-    });
+    const bdoc=await business.find(b_email);
     return bdoc;
 },
 updateFirstTransaction:async(b_email)=>{
 await  business.updateOne({b_email:b_email},{firstTransaction:0},()=>{
     if(err){console.log(err);}
+});
+},
+chainTransaction:async(amount,timestamp,remark,hash,previousHash,b_email)=>{
+var transactionOne=new transaction();
+transactionOne.amount=amount;
+transactionOne.timeStamp=timestamp;
+transactionOne.remarks=remark;
+transactionOne.hash=hash;
+transactionOne.previousHash=previousHash;
+await business.find({b_email:b_email},(err,doc)=>{
+    if(err){console.log(err);}
+    else{console.log(doc)}
 });
 },
 }
