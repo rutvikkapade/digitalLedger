@@ -44,7 +44,6 @@ await bcrypt.compare(req.body.l_password,isUser[2],(err,result)=>{
     if(err){console.log(err);}
     else{console.log(result);
         req.session.username=isUser[1][0].b_email;
-        req.session.b_doc=model.findBusiness(l_email);
     res.sendFile(path.join(__dirname,"public","html","dashboard.html"));
     }
 })
@@ -59,7 +58,7 @@ app.post('/addClient',(req,res)=>{
     res.sendStatus(204);
 });
 app.post('/sendTransactionRequest',async(req,res)=>{
-var link=await model.transactionRequest(req.body.amount,req.body.clientEmail,req.session.username);
+var link=await model.transactionRequest(req.body.amount,req.body.clientEmail,req.session.username,req.body.remarks);
 await mailer.sendTransactionMail(req.body.amount,req.body.reason,req.body.clientEmail,req.session.username,link);
 res.sendStatus(204);
 });
@@ -80,5 +79,9 @@ app.get('/loginPage',(req,res)=>{
 app.post('/approvePayment',(req,res)=>{
 payment.processPayment(req.body.unique,req.body.verdict);
 res.send("recieved data at backend");
+});
+app.get('/logout',(req,res)=>{
+req.session.username=null;
+res.sendFile(path.join(__dirname,"public","html","login.html"));
 })
 app.listen(port,()=>{console.log('server on')});
