@@ -1,45 +1,41 @@
 const { SHA256 } = require('crypto-js');
-const utf8=require('utf8');
-function calculateHash(amount,remarks,previousHash,timeStamp){
-    return SHA256(amount + timeStamp + previousHash+remarks).toString();
-}
+const bcrypt = require('bcrypt');
 
-module.exports={
+module.exports = {
 
-    addNewBlock :(firstTransaction, amount, previousHash, remarks,timeStamp) =>{
+    addNewBlock: async(firstTransaction, amount, previousHash, remarks, timeStamp) => {
         // var newBlock = {};
         var hash;
         console.log('in hash function');
         if (firstTransaction == 1) {
-            amount = utf8.encode(amount);
-            remarks = utf8.encode(remarks);
-            previousHash =Math.random().toString();
-            timeStamp=timeStamp;
-        }
-        else {
-            amount = utf8.encode(amount);
-            remarks = utf8.encode(remarks);
+            amount = amount;
+            remarks = remarks;
+            previousHash = Math.random().toString();
+            timeStamp = timeStamp;
+        } else {
+            amount = amount;
+            remarks = remarks;
             previousHash = previousHash;
-            console.log(previousHash);
-            timeStamp=timeStamp;
+            timeStamp = timeStamp;
         }
-        hash = calculateHash(amount,remarks,previousHash,timeStamp);
-        console.log(hash+' '+previousHash);
-        return {'hash': hash, 'previousHash': previousHash};
+        str = amount + remarks + previousHash + timeStamp;
+        const hashOne = SHA256(str);
+        return { 'hash': hashOne, 'previousHash': previousHash };
     },
-    isChainValid:(chain)=> {
+    isChainValid: async(chain) => {
         for (let i = 0; i < chain.length; i++) {
-            if (chain[i].hash !== calculatehash(chain[i])) {
-                console.log(`Block ${i} has been corrupted`);
-                return false;   
+            str = chain[i].amount + chain[i].remarks + chain[i].previousHash + chain[i].timeStamp;
+            hash = SHA256(str);
+            if (chain[i].hash != hash) {
+                // console.log(`Block ${i} has been corrupted`);
+                return { 'isOk': false, 'index': i };
             }
-            if (i > 0 && chain[i].previousHash !== chain[i-1].hash) {
-                console.log(`Block ${i-1} has been corrupted`);
-                return false;     
+            if (i > 0 && chain[i].previousHash != chain[i - 1].hash) {
+                // console.log(`Block ${i - 1} has been corrupted`);
+                return { 'isOk': false, 'index': i };
             }
-            return true;
+
         }
+        return { 'isOk': true };
     }
 }
-
-

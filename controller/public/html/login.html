@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-</head>
-<body>
-<div class="login-box">
-  <h2>Secure Login</h2>
-  <form method="post" action="login" id="loginForm">
-    <div class="user-box">
-      <input type="text" name="l_email" required>
-      <label>Email</label>
-    </div>
-    <div class="user-box">
-      <input type="password" name="l_password" required>
-      <label>Password</label>
-    </div>
-    <a id="submitData">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-     Submit
-    </a><a href="/loginPage" style="color: white; text-decoration: none; font-size: 15px; padding: 15px; margin-top: 15px;">Click Here to Sign Up</a>
-  </form>
 
-</div>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="login-box">
+        <h2>Secure Login</h2>
+        <form method="post" action="login" id="loginForm" autocomplete="off">
+            <div class="user-box">
+                <input type="text" name="l_email" required>
+                <label>Email</label>
+            </div>
+            <div class="user-box">
+                <input type="password" name="l_password" required>
+                <label>Password</label>
+            </div>
+            <a id="submitData">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span> Submit
+            </a><a href="/signUp" style="color: white; text-decoration: none; font-size: 15px; padding: 15px; margin-top: 15px;">Click Here to
+        Sign Up</a>
+        </form>
+
+    </div>
 </body>
 <script type="text/javascript">
-  $('#submitData').click(()=>{
-    $('#loginForm').submit();
-    console.log("hello");
-  })
+    $('#submitData').click(() => {
+        $('#loginForm').submit();
+        console.log("hello");
+    })
 </script>
+
 </html>
