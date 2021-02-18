@@ -12,3 +12,23 @@ transactional database.
 
 ## Power Of Blockchain 
 Blockchain makes the supply chain secure, transparent, authentic and trustworthy. Blockchain used as a transactional network, to run and verify a smart contract. Dual data storage architecture is required to avoid degrading blockchain performance.
+
+## Screenshots of Product
+
+![alt text](https://i.ibb.co/hFz1tw0/landing-Desktop.png)
+
+![alt text](https://i.ibb.co/YbKd3mM/landing-Mobile.png)
+
+![alt text](https://i.ibb.co/dmTbrSH/landing-Mobile.png)
+
+![alt text](https://i.ibb.co/hZ8BYkF/landing-Mobile.png)
+
+# Steps to run on Local System
+
+## 1. Install node : https://nodejs.org/en/download/
+## 2. Install mongoDB : https://www.mongodb.com/try/download/community
+## 3  run : npm i in root of the project.
+## 4  add local mongoDB url to main/model/model.js
+## 5 cd to /controller and run : node server.js
+
+## Author : Rutvik Kapade
