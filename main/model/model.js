@@ -2,9 +2,7 @@ const { hash } = require('bcrypt');
 const { Mongoose } = require('mongoose');
 
 mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/testDB', { useUnifiedTopology: true, useNewUrlParser: true }, (err) => {
-    if (err) { console.log(err); } else { console.log('database connection established'); }
-});
+
 var ObjectId = mongoose.Schema.ObjectId;
 var pendingTransactionsSchema = new mongoose.Schema({
     amount: { type: Number, sparse: true },
