@@ -12,7 +12,7 @@ Therefore our product uses fundamental principles of blockchain to evalute hash 
 transactional database.
 
 ## Power Of Blockchain 
-Blockchain makes the supply chain secure, transparent, authentic and trustworthy. Blockchain used as a transactional network, to run and verify a smart contract. Dual data storage architecture is required to avoid degrading blockchain performance.
+Blockchain makes the supply chain secure, transparent, authentic and trustworthy. Blockchain is used as a transactional network, to run and verify a smart contracts. Dual data storage architecture is required to avoid degrading blockchain performance.
 
 ## Screenshots of Product
 
