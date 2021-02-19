@@ -97,7 +97,7 @@ module.exports = {
     },
     isPresent: async(id) => { //checks is a pending transaction request exists or not
         var hashCheck = false;
-        await pending.findById(id, (err, result) => {
+        const a=await pending.findById(id, (err, result) => {
             if (err) { console.log(err); } else {
                 if (result != null) { hashCheck = true; }
             }

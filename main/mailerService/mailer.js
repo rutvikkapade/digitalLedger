@@ -19,7 +19,12 @@ module.exports = {
             to: clientEmail,
             subject: "PAYMENT REQUEST",
             text: reason,
-            html: "<b>AMOUNT PAYABLE " + amount + " TO " + b_email + " USE LINK: " + link + "</b>",
+            html: `<h2>Payment REQUEST By `+b_email+`</h1>
+                    <br>
+                    <h2 style="color:red">Amount :`+amount+`</h4>
+                    <br>
+                    <h2>Payment Link: `+link+`</h5>
+                    <br>`,
         });
     }
 }

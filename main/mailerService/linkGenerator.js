@@ -1,5 +1,5 @@
-module.exports={
-generateLink : (link)=>{
-return 'http://localhost:4208/payment?unique='+link;
-}
+module.exports = {
+    generateLink: (link) => { //generates a payment link
+        return 'https://digital-ledger-rutvikkapade.herokuapp.com/payment?unique='+link;
+    }
 }
