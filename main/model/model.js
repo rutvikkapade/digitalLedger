@@ -3,7 +3,7 @@ const { Mongoose } = require('mongoose');
 
 mongoose = require('mongoose');
 //mongo connction setup
-mongoose.connect('mongodb+srv://dbuser:root@cluster0.1fwfj.mongodb.net/mainDB?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true }, (err) => {
+mongoose.connect('<mongoDb url here>', { useUnifiedTopology: true, useNewUrlParser: true }, (err) => {
     if (err) {
         console.log(err);
     } else { console.log('database connection established'); }
@@ -97,7 +97,7 @@ module.exports = {
     },
     isPresent: async(id) => { //checks is a pending transaction request exists or not
         var hashCheck = false;
-        const a=await pending.findById(id, (err, result) => {
+        const a = await pending.findById(id, (err, result) => {
             if (err) { console.log(err); } else {
                 if (result != null) { hashCheck = true; }
             }
