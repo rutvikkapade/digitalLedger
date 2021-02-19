@@ -11,14 +11,17 @@ const payment = require("../main/payment/paymentService.js")
 const blockchain = require("../main/blockchain/blockchain.js");
 const { mode } = require('crypto-js');
 const saltRounds = 10;
-app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 3600000 },
-}))
+app.use(session({ //session details
+        secret: 'secret-key',
+        resave: false,
+        saveUninitialized: true,
+        cookie: { maxAge: 3600000 },
+    }))
+    //server file routes all the get/post requests 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
+// '/' home request
 app.get('/', (req, res) => {
     if (req.session.username != null) {
         console.log(req.session.username);
@@ -28,6 +31,7 @@ app.get('/', (req, res) => {
     }
 
 });
+// register route 
 app.post('/register', (req, res) => {
     bcrypt.hash(req.body.b_password, saltRounds, (err, hash) => {
         if (err) {
@@ -38,8 +42,8 @@ app.post('/register', (req, res) => {
     })
     res.sendStatus(204);
 });
+// login route
 app.post('/login', async(req, res) => {
-
     const isUser = await model.login(req.body.l_email);
     if (isUser[0] == true) {
         bcrypt.compare(req.body.l_password, isUser[2], (err, result) => {
@@ -50,52 +54,59 @@ app.post('/login', async(req, res) => {
         })
     } else { console.log('user not found!'); }
 });
-app.get('/show', (req, res) => {
-    res.json({ "user logged in": req.session.username });
-});
+// add client route 
 app.post('/addClient', (req, res) => {
-
     model.addClient(req.body.clientName, req.body.clientEmail, req.body.clientMobile, req.session.username);
     res.sendStatus(204);
 });
+// send transaction route 
 app.post('/sendTransactionRequest', async(req, res) => {
     var link = await model.transactionRequest(req.body.amount, req.body.clientEmail, req.session.username, req.body.remarks);
     await mailer.sendTransactionMail(req.body.amount, req.body.reason, req.body.clientEmail, req.session.username, link);
     res.sendStatus(204);
 });
+// payment route 
 app.get('/payment', async(req, res) => {
-    var isPresent = await model.isPresent(req.query.unique);
-    if (isPresent) {
-        res.sendFile(path.join(__dirname, "public", "html", "payment.html"));
-    } else {
-        res.send('<h3>this url is expired , the payment is complete or declined already</h3>');
-    }
-})
+        var isPresent = await model.isPresent(req.query.unique);
+        if (isPresent) {
+            res.sendFile(path.join(__dirname, "public", "html", "payment.html"));
+        } else {
+            res.send('<h3>this url is expired , the payment is complete or declined already</h3>');
+        }
+    })
+    // sign up route
 app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "html", "signUp.html"));
-})
+        res.sendFile(path.join(__dirname, "public", "html", "signUp.html"));
+    })
+    //login page route 
 app.get('/loginPage', (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "html", "login.html"))
-})
+        res.sendFile(path.join(__dirname, "public", "html", "login.html"))
+    })
+    //approve payment route
 app.post('/approvePayment', (req, res) => {
     payment.processPayment(req.body.unique, req.body.verdict);
     res.send("recieved data at backen");
 });
+//logout route
 app.get('/logout', (req, res) => {
-    req.session.username = null;
-    res.sendFile(path.join(__dirname, "public", "html", "login.html"));
-})
+        req.session.username = null;
+        res.sendFile(path.join(__dirname, "public", "html", "login.html"));
+    })
+    //getall route 
 app.get('/getall', async(req, res) => {
-    const doc = await model.findBusiness(req.session.username);
-    res.json(doc);
-})
+        const doc = await model.findBusiness(req.session.username);
+        res.json(doc);
+    })
+    // get clients route
 app.get('/getClients', async(req, res) => {
     const doc = await model.findBusiness(req.session.username);
     res.send(doc[0].clients);
 });
+//check validity route
 app.post('/checkValidity', async(req, res) => {
-    const client = await model.checkClient(req.body.clientEmail, req.session.username);
-    const obj = await blockchain.isChainValid(client.clients[0].clientTransactions);
-    res.json(obj);
-})
+        const client = await model.checkClient(req.body.clientEmail, req.session.username);
+        const obj = await blockchain.isChainValid(client.clients[0].clientTransactions);
+        res.json(obj);
+    })
+    //port activation
 app.listen(port, () => { console.log('server on') });
