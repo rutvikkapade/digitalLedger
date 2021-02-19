@@ -12,7 +12,7 @@ var mailservice = mailer.createTransport({
 });
 
 module.exports = {
-    sendTransactionMail: async(amount, reason, clientEmail, b_email, link) => {
+    sendTransactionMail: async(amount, reason, clientEmail, b_email, link) => { //sends the payment mail to the client
         link = linkGenerator.generateLink(link);
         await mailservice.sendMail({
             from: 'dIGITAlLedgeR',

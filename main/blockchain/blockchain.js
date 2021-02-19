@@ -3,39 +3,36 @@ const bcrypt = require('bcrypt');
 
 module.exports = {
 
-    addNewBlock: async(firstTransaction, amount, previousHash, remarks, timeStamp) => {
-        // var newBlock = {};
+    addNewBlock: async(firstTransaction, amount, previousHash, remarks, timeStamp) => { //generates new block hashes
         var hash;
-        console.log('in hash function');
-        if (firstTransaction == 1) {
+        if (firstTransaction == 1) { //executes only if firstTransaction is set to true
             amount = amount;
             remarks = remarks;
-            previousHash = Math.random().toString();
+            previousHash = Math.random().toString(); //random previous hash for the very first transaction
             timeStamp = timeStamp;
-        } else {
+        } else { //executes only if firstTransaction is set to false
             amount = amount;
             remarks = remarks;
             previousHash = previousHash;
             timeStamp = timeStamp;
         }
         str = amount + remarks + previousHash + timeStamp;
-        const hashOne = SHA256(str);
+        const hashOne = SHA256(str); //computes new hash
         return { 'hash': hashOne, 'previousHash': previousHash };
     },
     isChainValid: async(chain) => {
-        for (let i = 0; i < chain.length; i++) {
+        for (let i = 0; i < chain.length; i++) { //checks transaction chain validity
             str = chain[i].amount + chain[i].remarks + chain[i].previousHash + chain[i].timeStamp;
-            hash = SHA256(str);
-            if (chain[i].hash != hash) {
-                // console.log(`Block ${i} has been corrupted`);
+            hash = SHA256(str); //recomputes hash of the data in transaction chain
+            if (chain[i].hash != hash) { //returns false and index of compromised block
                 return { 'isOk': false, 'index': i };
             }
-            if (i > 0 && chain[i].previousHash != chain[i - 1].hash) {
-                // console.log(`Block ${i - 1} has been corrupted`);
-                return { 'isOk': false, 'index': i };
+            if (i > 0 && chain[i].previousHash != chain[i - 1].hash) { //compares previous hash and hash of two block consecutive blocks
+                return { 'isOk': false, 'index': i }; //returns false and index of compromised block
+
             }
 
         }
-        return { 'isOk': true };
+        return { 'isOk': true }; // returns true if there is no tampering in data
     }
 }
